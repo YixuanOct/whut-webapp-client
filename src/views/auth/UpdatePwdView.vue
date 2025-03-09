@@ -9,28 +9,36 @@ const updatePwdForm = ref({
   newPassword: "",
   confirmNewPassword: "",
 });
+const rules = {
+  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  oldPassword: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
+  newPassword: [{ required: true, message: "请输入新密码", trigger: "blur" }],
+  confirmNewPassword: [
+    { required: true, message: "请再次输入新密码", trigger: "blur" },
+  ],
+};
 </script>
 <template>
-  <el-container class="login-container">
-    <el-header class="login-header">修 改 密 码</el-header>
+  <el-container>
+    <el-header class="update-pwd-header">修 改 密 码</el-header>
 
-    <el-main class="login-main">
-      <el-form :model="updatePwdForm">
-        <el-form-item>
+    <el-main class="update-pwd-main">
+      <el-form :model="updatePwdForm" :rules="rules" status-icon>
+        <el-form-item prop="username">
           <el-input v-model="updatePwdForm.username" placeholder="用户名" />
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="oldPassword">
           <el-input v-model="updatePwdForm.oldPassword" placeholder="旧密码" />
         </el-form-item>
       </el-form>
 
       <el-divider direction="vertical" class="divider" />
 
-      <el-form :model="updatePwdForm">
-        <el-form-item>
+      <el-form :model="updatePwdForm" :rules="rules" status-icon>
+        <el-form-item prop="newPassword">
           <el-input v-model="updatePwdForm.newPassword" placeholder="新密码" />
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="confirmNewPassword">
           <el-input
             v-model="updatePwdForm.confirmNewPassword"
             placeholder="确认新密码"
@@ -39,7 +47,7 @@ const updatePwdForm = ref({
       </el-form>
     </el-main>
 
-    <el-footer class="login-footer">
+    <el-footer class="update-pwd-footer">
       <div class="button-group">
         <el-button link>修改密码</el-button>
         <el-button link @click="router.push('/auth/login')">返回登录</el-button>
@@ -48,7 +56,7 @@ const updatePwdForm = ref({
   </el-container>
 </template>
 <style scoped>
-.login-header {
+.update-pwd-header {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,7 +66,7 @@ const updatePwdForm = ref({
   user-select: none;
 }
 
-.login-main {
+.update-pwd-main {
   display: flex;
   padding: 12px 25px;
 }
@@ -70,13 +78,12 @@ const updatePwdForm = ref({
 }
 
 .el-form-item {
-  margin-bottom: 0;
+  margin: 8px 0;
 }
 
 :deep(.el-input__wrapper) {
   width: 200px;
   height: 40px;
-  margin: 4px 0;
   font-size: 13px;
   letter-spacing: 0.15px;
   border: none;
@@ -86,10 +93,14 @@ const updatePwdForm = ref({
   box-shadow: inset 2px 2px 4px #d1d9e6, inset -2px -2px 4px #f9f9f9;
 }
 
+:deep(.el-form-item__error) {
+  padding-left: 11px;
+}
+
 .el-button {
   width: 222px;
   height: 42px;
-  margin: 4px 0;
+  margin: 8px 0;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 700;
@@ -98,29 +109,36 @@ const updatePwdForm = ref({
 }
 
 .divider {
-  height: 100px;
+  height: 116px;
   border-left: 1px #181818 solid;
   margin: 0 45px;
 }
 
-.login-footer {
+.update-pwd-footer {
   height: 50px;
   padding: 0 25px;
-  /* background-color: #000; */
 }
 
-.login-footer .button-group {
+.update-pwd-footer .button-group {
   display: flex;
   justify-content: space-between;
 }
 
-.login-footer .el-button:first-child {
+.update-pwd-footer .el-button:first-child {
   flex: 1;
   padding-right: 46px;
 }
 
-.login-footer .el-button:last-child {
+.update-pwd-footer .el-button:last-child {
   flex: 1;
   padding-left: 46px;
+}
+
+:deep(.el-form-item .el-input__validateIcon) {
+  color: #67c23a;
+}
+
+:deep(.el-form-item.is-error .el-input__validateIcon) {
+  color: #f56c6c;
 }
 </style>
