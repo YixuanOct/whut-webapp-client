@@ -1,35 +1,74 @@
 <script setup>
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import anime from "animejs/lib/anime.es.js";
 
-const enterActiveClass = ref("");
-const leaveActiveClass = ref("");
 const route = useRoute();
+const nextPosition = ref(100);
+
+function beforeEnter(el) {
+  anime.set(el, {
+    translateX: nextPosition.value,
+    opacity: 0,
+  });
+}
+function enter(el, done) {
+  anime({
+    targets: ".auth-main",
+    height: el.clientHeight + 24,
+    duration: 700,
+    easing: "easeOutExpo",
+  });
+  anime({
+    targets: el,
+    translateX: 0,
+    opacity: 1,
+    duration: 700,
+    easing: "easeOutExpo",
+    complete: done,
+  });
+}
+function leave(el, done) {
+  anime({
+    targets: el,
+    translateX: -nextPosition.value,
+    opacity: 0,
+    duration: 700,
+    easing: "easeInExpo",
+    complete: done,
+  });
+}
 
 watch(
   () => route.meta.index,
   (newIndex, oldIndex) => {
     if (newIndex > oldIndex) {
-      enterActiveClass.value = "animate__animated animate__fadeInRight";
-      leaveActiveClass.value = "animate__animated animate__fadeOutLeft";
+      nextPosition.value = 100;
     } else {
-      enterActiveClass.value = "animate__animated animate__fadeInLeft";
-      leaveActiveClass.value = "animate__animated animate__fadeOutRight";
+      nextPosition.value = -100;
     }
   }
 );
+onMounted(() => {
+  const mainEl = document.querySelector(".auth-main");
+  anime.set(mainEl, {
+    height: mainEl.clientHeight,
+  });
+});
 </script>
 <template>
   <el-container class="auth-container">
     <el-main class="auth-main">
       <router-view v-slot="{ Component }">
-        <Transition
+        <transition
+          :css="false"
+          @before-enter="beforeEnter"
+          @enter="enter"
+          @leave="leave"
           mode="out-in"
-          :enter-active-class="enterActiveClass"
-          :leave-active-class="leaveActiveClass"
         >
           <component :is="Component" />
-        </Transition>
+        </transition>
       </router-view>
     </el-main>
   </el-container>

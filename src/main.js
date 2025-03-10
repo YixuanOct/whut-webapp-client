@@ -1,6 +1,5 @@
 import 'element-plus/dist/index.css'
 import 'normalize.css'
-import 'animate.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
