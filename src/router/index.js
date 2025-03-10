@@ -24,6 +24,20 @@ const router = createRouter({
         }
       ]
     },
+    {
+      path: "/home",
+      component: () => import("@/layouts/HomeLayout.vue"),
+      children: [
+        {
+          path: "front",
+          component: () => import("@/views/home/FrontView.vue"),
+        },
+        {
+          path: "user",
+          component: () => import("@/views/home/UserView.vue"),
+        }
+      ]
+    }
   ],
 })
 
