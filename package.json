@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "animejs": "^3.2.2",
     "element-plus": "^2.9.6",
     "normalize.css": "^8.0.1",

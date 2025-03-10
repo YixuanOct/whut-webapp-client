@@ -1,6 +1,11 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import {
+  QqOutlined,
+  WechatOutlined,
+  AlipayOutlined,
+} from "@ant-design/icons-vue";
 
 const router = useRouter();
 const loginForm = ref({
@@ -16,15 +21,25 @@ function handleLogin() {
   // TODO: 向后端发送登录请求
 }
 </script>
+
 <template>
   <el-container>
     <el-header class="login-header">登 录</el-header>
 
     <el-main class="login-main">
       <div class="button-group">
-        <el-button type="primary">QQ登录</el-button>
-        <el-button type="success">微信登录</el-button>
-        <el-button>支付宝登录</el-button>
+        <el-button type="primary">
+          <QqOutlined class="button-icon" />
+          QQ登录
+        </el-button>
+        <el-button type="success">
+          <WechatOutlined class="button-icon" />
+          微信登录
+        </el-button>
+        <el-button>
+          <AlipayOutlined class="button-icon" />
+          支付宝登录
+        </el-button>
       </div>
 
       <el-divider direction="vertical" class="divider" />
@@ -59,7 +74,13 @@ function handleLogin() {
     </el-footer>
   </el-container>
 </template>
+
 <style scoped>
+.button-icon {
+  font-size: 16px;
+  margin-right: 4px;
+}
+
 .login-header {
   display: flex;
   justify-content: center;
