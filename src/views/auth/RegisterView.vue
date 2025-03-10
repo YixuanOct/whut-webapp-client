@@ -14,8 +14,19 @@ const registerForm = ref({
 });
 const rules = {
   username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-  password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-  email: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
+  password: [
+    { required: true, message: "请输入密码", trigger: "blur" },
+    { min: 8, message: "密码长度不能小于 8 位", trigger: "blur" },
+    {
+      pattern: /^[A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]+$/,
+      message: "仅允许字母、数字及特殊符号",
+      trigger: "blur",
+    },
+  ],
+  email: [
+    { required: true, message: "请输入邮箱", trigger: "blur" },
+    { type: "email", message: "邮箱格式不正确", trigger: "blur" },
+  ],
   date: [{ required: true, message: "请选择日期", trigger: "blur" }],
 };
 
@@ -35,6 +46,10 @@ function beforeUpload(rawFile) {
     return false;
   }
   return true;
+}
+
+function handleRegister() {
+  //TODO: 向后端发送注册请求
 }
 </script>
 <template>
@@ -94,7 +109,7 @@ function beforeUpload(rawFile) {
 
     <el-footer class="register-footer">
       <div class="button-group">
-        <el-button link>注册用户</el-button>
+        <el-button link @click="handleRegister">注册用户</el-button>
         <el-button link @click="router.push('/auth/login')">返回登录</el-button>
       </div>
     </el-footer>

@@ -11,6 +11,10 @@ const rules = {
   username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
 };
+
+function handleLogin() {
+  // TODO: 向后端发送登录请求
+}
 </script>
 <template>
   <el-container>
@@ -34,9 +38,12 @@ const rules = {
             v-model="loginForm.password"
             placeholder="密码"
             type="password"
+            :show-password="true"
           />
         </el-form-item>
-        <el-button type="primary" auto-insert-space>登录</el-button>
+        <el-button type="primary" auto-insert-space @click="handleLogin"
+          >登录</el-button
+        >
       </el-form>
     </el-main>
 

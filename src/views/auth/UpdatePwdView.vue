@@ -12,11 +12,33 @@ const updatePwdForm = ref({
 const rules = {
   username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   oldPassword: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
-  newPassword: [{ required: true, message: "请输入新密码", trigger: "blur" }],
+  newPassword: [
+    { required: true, message: "请输入新密码", trigger: "blur" },
+    { min: 8, message: "密码长度不能小于 8 位", trigger: "blur" },
+    {
+      pattern: /^[A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]+$/,
+      message: "仅允许字母、数字及特殊符号",
+      trigger: "blur",
+    },
+  ],
   confirmNewPassword: [
     { required: true, message: "请再次输入新密码", trigger: "blur" },
+    {
+      validator: (rule, value, callback) => {
+        if (value === updatePwdForm.value.newPassword) {
+          callback();
+        } else {
+          callback(new Error("两次输入的密码不一致"));
+        }
+      },
+      trigger: "blur",
+    },
   ],
 };
+
+function handleUpdatePwd() {
+  //TODO: 向后端发送修改密码请求
+}
 </script>
 <template>
   <el-container>
@@ -49,7 +71,7 @@ const rules = {
 
     <el-footer class="update-pwd-footer">
       <div class="button-group">
-        <el-button link>修改密码</el-button>
+        <el-button link @click="handleUpdatePwd">修改密码</el-button>
         <el-button link @click="router.push('/auth/login')">返回登录</el-button>
       </div>
     </el-footer>
