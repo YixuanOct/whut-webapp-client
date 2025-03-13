@@ -163,4 +163,23 @@ function handleUpdatePwd() {
 :deep(.el-form-item.is-error .el-input__validateIcon) {
   color: #f56c6c;
 }
+
+@media (max-width: 800px) {
+  .update-pwd-main {
+    flex-direction: column;
+    align-items: center;
+  }
+  .divider {
+    display: none;
+  }
+  .update-pwd-footer .button-group {
+    flex-direction: column;
+  }
+  .update-pwd-footer .el-button {
+    padding: 2px !important;
+  }
+  .update-pwd-footer {
+    height: 70px;
+  }
+}
 </style>

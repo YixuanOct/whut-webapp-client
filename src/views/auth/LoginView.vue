@@ -23,7 +23,7 @@ function handleLogin() {
 </script>
 
 <template>
-  <el-container>
+  <el-container class="login-container">
     <el-header class="login-header">登 录</el-header>
 
     <el-main class="login-main">
@@ -175,5 +175,23 @@ function handleLogin() {
 
 :deep(.el-form-item.is-error .el-input__validateIcon) {
   color: #f56c6c;
+}
+@media (max-width: 800px) {
+  .login-main {
+    flex-direction: column;
+    align-items: center;
+  }
+  .divider {
+    display: none;
+  }
+  .login-footer .button-group {
+    flex-direction: column;
+  }
+  .login-footer .el-button {
+    padding: 2px !important;
+  }
+  .login-footer {
+    height: 70px;
+  }
 }
 </style>

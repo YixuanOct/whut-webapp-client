@@ -248,4 +248,22 @@ function handleRegister() {
 :deep(.el-form-item.is-error .el-input__validateIcon) {
   color: #f56c6c;
 }
+@media (max-width: 800px) {
+  .register-main {
+    flex-direction: column;
+    align-items: center;
+  }
+  .divider {
+    display: none;
+  }
+  .register-footer .button-group {
+    flex-direction: column;
+  }
+  .register-footer .el-button {
+    padding: 2px !important;
+  }
+  .register-footer {
+    height: 70px;
+  }
+}
 </style>
