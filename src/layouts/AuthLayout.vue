@@ -16,14 +16,14 @@ function enter(el, done) {
   anime({
     targets: ".auth-main",
     height: el.clientHeight + 24,
-    duration: 700,
+    duration: 400,
     easing: "easeOutExpo",
   });
   anime({
     targets: el,
     translateX: 0,
     opacity: 1,
-    duration: 700,
+    duration: 400,
     easing: "easeOutExpo",
     complete: done,
   });
@@ -33,7 +33,7 @@ function leave(el, done) {
     targets: el,
     translateX: -nextPosition.value,
     opacity: 0,
-    duration: 700,
+    duration: 400,
     easing: "easeInExpo",
     complete: done,
   });

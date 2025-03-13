@@ -54,7 +54,7 @@ onMounted(() => {
 
 <template>
   <el-container class="home-container">
-    <el-aside :width="isMobile ? '0px' : '200px'">
+    <el-aside :width="isMobile ? '0px' : '200px'" class="home-aside">
       <el-drawer
         v-model="isOpen"
         direction="ltr"
@@ -105,6 +105,10 @@ onMounted(() => {
 .home-container {
   width: 100vw;
   height: 100vh;
+}
+
+.home-aside {
+  user-select: none;
 }
 
 .home-sub-container {

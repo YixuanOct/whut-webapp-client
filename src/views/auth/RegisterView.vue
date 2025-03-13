@@ -50,6 +50,7 @@ function beforeUpload(rawFile) {
 
 function handleRegister() {
   //TODO: 向后端发送注册请求
+  console.log(RegisterForm.value);
 }
 </script>
 <template>

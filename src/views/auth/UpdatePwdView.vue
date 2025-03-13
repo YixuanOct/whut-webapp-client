@@ -38,6 +38,7 @@ const rules = {
 
 function handleUpdatePwd() {
   //TODO: 向后端发送修改密码请求
+  console.log(updatePwdForm.value);
 }
 </script>
 <template>

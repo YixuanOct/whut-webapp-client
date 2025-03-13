@@ -19,6 +19,8 @@ const rules = {
 
 function handleLogin() {
   // TODO: 向后端发送登录请求
+  console.log(loginForm.value);
+  router.push("/home/front");
 }
 </script>
 
