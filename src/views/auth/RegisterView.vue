@@ -90,7 +90,7 @@ function handleRegister() {
             action="#"
             :show-file-list="false"
             :before-upload="beforeUpload"
-            :on-success="handleSuccess"
+            :on-change="handleSuccess"
             :auto-upload="false"
           >
             <el-avatar
@@ -145,6 +145,10 @@ function handleRegister() {
 
 .el-form-item {
   margin: 8px 0;
+}
+
+.el-avatar {
+  --el-avatar-bg-color: transition;
 }
 
 :deep(.el-input__wrapper) {

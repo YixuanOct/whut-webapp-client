@@ -9,19 +9,15 @@ import {
   ReadOutlined,
   HighlightTwoTone,
 } from "@ant-design/icons-vue";
-
-const isCollapse = ref(false);
 </script>
 
 <template>
-  <el-menu
-    :collapse="isCollapse"
-    :default-openeds="['2', '3']"
-    default-active="1"
-  >
+  <el-menu :default-openeds="['2', '3']" default-active="1">
     <el-menu-item index="1">
-      <HomeOutlined class="icon" />
-      <span>首页</span>
+      <template #title>
+        <HomeOutlined class="icon" />
+        <span>首页</span>
+      </template>
     </el-menu-item>
     <el-sub-menu index="2">
       <template #title>
@@ -29,12 +25,16 @@ const isCollapse = ref(false);
         <span>功能菜单</span>
       </template>
       <el-menu-item index="2-1">
-        <UserOutlined class="icon" />
-        <span>用户管理</span>
+        <template #title>
+          <UserOutlined class="icon" />
+          <span>用户管理</span>
+        </template>
       </el-menu-item>
       <el-menu-item index="2-2">
-        <ReadOutlined class="icon" />
-        <span>文章管理</span>
+        <template #title>
+          <ReadOutlined class="icon" />
+          <span>文章管理</span>
+        </template>
       </el-menu-item>
     </el-sub-menu>
     <el-sub-menu index="3">
@@ -43,21 +43,29 @@ const isCollapse = ref(false);
         <span>主题切换</span>
       </template>
       <el-menu-item @click="$emit('toggleBlueTheme')">
-        <HighlightTwoTone class="icon" twoToneColor="#409EFF" />
-        <span>蓝色风格</span>
+        <template #title>
+          <HighlightTwoTone class="icon" twoToneColor="#409EFF" />
+          <span>蓝色风格</span>
+        </template>
       </el-menu-item>
       <el-menu-item @click="$emit('toggleYellowTheme')">
-        <HighlightTwoTone class="icon" twoToneColor="#E6A23C" />
-        <span>黄色风格</span>
+        <template #title>
+          <HighlightTwoTone class="icon" twoToneColor="#E6A23C" />
+          <span>黄色风格</span>
+        </template>
       </el-menu-item>
     </el-sub-menu>
     <el-menu-item index="4">
-      <EnvironmentOutlined class="icon" />
-      <span>导航三</span>
+      <template #title>
+        <EnvironmentOutlined class="icon" />
+        <span>导航三</span>
+      </template>
     </el-menu-item>
     <el-menu-item index="5">
-      <EnvironmentOutlined class="icon" />
-      <span>导航四</span>
+      <template #title>
+        <EnvironmentOutlined class="icon" />
+        <span>导航四</span>
+      </template>
     </el-menu-item>
   </el-menu>
 </template>

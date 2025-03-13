@@ -1,21 +1,56 @@
 <script setup>
 import SidebarNav from "@/components/SidebarNav.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { MenuOutlined } from "@ant-design/icons-vue";
 
 const theme = ref("blue-theme");
+const isMobile = ref(false);
+const isOpen = ref(false);
+
+function toggleBlueTheme() {
+  theme.value = "blue-theme";
+  isOpen.value = false;
+}
+function toggleYellowTheme() {
+  theme.value = "yellow-theme";
+  isOpen.value = false;
+}
+
+onMounted(() => {
+  isMobile.value = window.innerWidth < 800;
+});
 </script>
 
 <template>
   <el-container class="home-container">
-    <el-aside width="200px">
+    <el-aside :width="isMobile ? '0px' : '200px'">
+      <el-drawer
+        v-model="isOpen"
+        direction="ltr"
+        size="200px"
+        :with-header="false"
+        body-class="home-drawer"
+        v-if="isMobile"
+      >
+        <SidebarNav
+          :class="theme"
+          @toggle-blue-theme="toggleBlueTheme"
+          @toggle-yellow-theme="toggleYellowTheme"
+        />
+      </el-drawer>
       <SidebarNav
         :class="theme"
-        @toggle-blue-theme="() => (theme = 'blue-theme')"
-        @toggle-yellow-theme="() => (theme = 'yellow-theme')"
+        @toggle-blue-theme="toggleBlueTheme"
+        @toggle-yellow-theme="toggleYellowTheme"
+        v-else
       />
     </el-aside>
     <el-container class="home-sub-container" :class="theme">
-      <el-header class="home-header"> </el-header>
+      <el-header class="home-header">
+        <el-button v-if="isMobile" link @click="isOpen = !isOpen" color="black">
+          <MenuOutlined class="icon" />
+        </el-button>
+      </el-header>
       <el-main class="home-main">
         <router-view v-slot="{ Component }">
           <transition>
@@ -36,6 +71,22 @@ const theme = ref("blue-theme");
 .home-sub-container {
   width: 100%;
   height: 100%;
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+}
+
+:deep(.home-drawer) {
+  padding: 0;
+}
+
+.icon {
+  font-size: 20px;
+}
+.el-button {
+  outline: none;
 }
 
 .blue-theme .home-header {
