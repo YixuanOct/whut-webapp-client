@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from "vue";
 import {
   HomeOutlined,
   CompassOutlined,
@@ -9,11 +8,21 @@ import {
   ReadOutlined,
   HighlightTwoTone,
 } from "@ant-design/icons-vue";
+import { useRouter } from "vue-router";
+
+const emit = defineEmits(["closeDrawer"]);
+
+function goTo(path) {
+  emit("closeDrawer");
+  router.push(path);
+}
+
+const router = useRouter();
 </script>
 
 <template>
   <el-menu :default-openeds="['2', '3']" default-active="1">
-    <el-menu-item index="1">
+    <el-menu-item index="1" @click="goTo('/home/front')">
       <template #title>
         <HomeOutlined class="icon" />
         <span>首页</span>
@@ -24,13 +33,13 @@ import {
         <CompassOutlined class="icon" />
         <span>功能菜单</span>
       </template>
-      <el-menu-item index="2-1">
+      <el-menu-item index="2-1" @click="goTo('/home/user')">
         <template #title>
           <UserOutlined class="icon" />
           <span>用户管理</span>
         </template>
       </el-menu-item>
-      <el-menu-item index="2-2">
+      <el-menu-item>
         <template #title>
           <ReadOutlined class="icon" />
           <span>文章管理</span>
@@ -55,13 +64,13 @@ import {
         </template>
       </el-menu-item>
     </el-sub-menu>
-    <el-menu-item index="4">
+    <el-menu-item>
       <template #title>
         <EnvironmentOutlined class="icon" />
         <span>导航三</span>
       </template>
     </el-menu-item>
-    <el-menu-item index="5">
+    <el-menu-item>
       <template #title>
         <EnvironmentOutlined class="icon" />
         <span>导航四</span>

@@ -2,6 +2,7 @@
 import SidebarNav from "@/components/SidebarNav.vue";
 import { onMounted, ref } from "vue";
 import { MenuOutlined } from "@ant-design/icons-vue";
+import anime from "animejs/lib/anime.es.js";
 
 const theme = ref("blue-theme");
 const isMobile = ref(false);
@@ -16,8 +17,38 @@ function toggleYellowTheme() {
   isOpen.value = false;
 }
 
-onMounted(() => {
+function beforeEnter(el) {
+  anime.set(el, {
+    opacity: 0,
+    scale: 0.8,
+  });
+}
+function enter(el, done) {
+  anime({
+    targets: el,
+    opacity: 1,
+    scale: 1,
+    duration: 400,
+    easing: "easeOutExpo",
+    complete: done,
+  });
+}
+function leave(el, done) {
+  anime({
+    targets: el,
+    opacity: 0,
+    scale: 0.8,
+    duration: 400,
+    easing: "easeInExpo",
+    complete: done,
+  });
+}
+function handleResize() {
   isMobile.value = window.innerWidth < 800;
+}
+onMounted(() => {
+  handleResize();
+  window.addEventListener("resize", handleResize);
 });
 </script>
 
@@ -36,12 +67,14 @@ onMounted(() => {
           :class="theme"
           @toggle-blue-theme="toggleBlueTheme"
           @toggle-yellow-theme="toggleYellowTheme"
+          @close-drawer="isOpen = false"
         />
       </el-drawer>
       <SidebarNav
         :class="theme"
         @toggle-blue-theme="toggleBlueTheme"
         @toggle-yellow-theme="toggleYellowTheme"
+        @close-drawer="isOpen = false"
         v-else
       />
     </el-aside>
@@ -53,7 +86,13 @@ onMounted(() => {
       </el-header>
       <el-main class="home-main">
         <router-view v-slot="{ Component }">
-          <transition>
+          <transition
+            mode="out-in"
+            :css="false"
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @leave="leave"
+          >
             <component :is="Component" />
           </transition>
         </router-view>
