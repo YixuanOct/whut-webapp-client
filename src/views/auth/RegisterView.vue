@@ -12,6 +12,8 @@ const registerForm = ref({
   date: "",
   avatarUrl: "",
 });
+const registerFormRef1 = ref(null);
+const registerFormRef2 = ref(null);
 const rules = {
   username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   password: [
@@ -28,6 +30,7 @@ const rules = {
     { type: "email", message: "邮箱格式不正确", trigger: "blur" },
   ],
   date: [{ required: true, message: "请选择日期", trigger: "blur" }],
+  avatarUrl: [{ required: true, message: "请上传头像", trigger: "blur" }],
 };
 
 function handleSuccess(uploadFile) {
@@ -48,9 +51,21 @@ function beforeUpload(rawFile) {
   return true;
 }
 
-function handleRegister() {
-  //TODO: 向后端发送注册请求
-  console.log(RegisterForm.value);
+async function handleRegister() {
+  try {
+    const [valid1, valid2] = await Promise.all([
+      registerFormRef1.value.validate(),
+      registerFormRef2.value.validate(),
+    ]);
+    if (valid1 && valid2) {
+      console.log(registerForm.value);
+      // TODO: 向后端发送注册请求
+
+      ElMessage.success("注册成功");
+    }
+  } catch (error) {
+    ElMessage.error("注册失败，请检查输入");
+  }
 }
 </script>
 <template>
@@ -58,7 +73,12 @@ function handleRegister() {
     <el-header class="register-header">注 册 新 用 户</el-header>
 
     <el-main class="register-main">
-      <el-form :model="registerForm" :rules="rules" status-icon>
+      <el-form
+        :model="registerForm"
+        :rules="rules"
+        status-icon
+        ref="registerFormRef1"
+      >
         <el-form-item prop="username">
           <el-input v-model="registerForm.username" placeholder="用户名" />
         </el-form-item>
@@ -79,7 +99,12 @@ function handleRegister() {
 
       <el-divider direction="vertical" class="divider" />
 
-      <el-form :model="registerForm" :rules="rules">
+      <el-form
+        :model="registerForm"
+        :rules="rules"
+        ref="registerFormRef2"
+        :hide-required-asterisk="true"
+      >
         <el-form-item
           prop="avatarUrl"
           label="请上传头像"
@@ -130,6 +155,7 @@ function handleRegister() {
 .register-main {
   display: flex;
   padding: 12px 25px;
+  overflow: hidden;
 }
 
 .register-main .button-group {

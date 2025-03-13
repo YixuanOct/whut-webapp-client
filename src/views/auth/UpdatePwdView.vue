@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ElMessage } from "element-plus";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -9,6 +10,8 @@ const updatePwdForm = ref({
   newPassword: "",
   confirmNewPassword: "",
 });
+const updatePwdFormRef1 = ref(null);
+const updatePwdFormRef2 = ref(null);
 const rules = {
   username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   oldPassword: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
@@ -36,9 +39,21 @@ const rules = {
   ],
 };
 
-function handleUpdatePwd() {
-  //TODO: 向后端发送修改密码请求
-  console.log(updatePwdForm.value);
+async function handleUpdatePwd() {
+  try {
+    const [valid1, valid2] = await Promise.all([
+      updatePwdFormRef1.value.validate(),
+      updatePwdFormRef2.value.validate(),
+    ]);
+    if (valid1 && valid2) {
+      console.log(updatePwdForm.value);
+      // TODO: 向后端发送修改密码请求
+
+      ElMessage.success("注册成功");
+    }
+  } catch (error) {
+    ElMessage.error("注册失败，请检查输入");
+  }
 }
 </script>
 <template>
@@ -46,7 +61,12 @@ function handleUpdatePwd() {
     <el-header class="update-pwd-header">修 改 密 码</el-header>
 
     <el-main class="update-pwd-main">
-      <el-form :model="updatePwdForm" :rules="rules" status-icon>
+      <el-form
+        :model="updatePwdForm"
+        :rules="rules"
+        status-icon
+        ref="updatePwdFormRef1"
+      >
         <el-form-item prop="username">
           <el-input v-model="updatePwdForm.username" placeholder="用户名" />
         </el-form-item>
@@ -57,7 +77,12 @@ function handleUpdatePwd() {
 
       <el-divider direction="vertical" class="divider" />
 
-      <el-form :model="updatePwdForm" :rules="rules" status-icon>
+      <el-form
+        :model="updatePwdForm"
+        :rules="rules"
+        status-icon
+        ref="updatePwdFormRef2"
+      >
         <el-form-item prop="newPassword">
           <el-input v-model="updatePwdForm.newPassword" placeholder="新密码" />
         </el-form-item>

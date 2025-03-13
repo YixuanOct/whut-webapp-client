@@ -6,21 +6,32 @@ import {
   WechatOutlined,
   AlipayOutlined,
 } from "@ant-design/icons-vue";
+import { ElMessage } from "element-plus";
 
 const router = useRouter();
 const loginForm = ref({
   username: "",
   password: "",
 });
+const loginFormRef = ref(null);
 const rules = {
   username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
 };
 
-function handleLogin() {
-  // TODO: 向后端发送登录请求
-  console.log(loginForm.value);
-  router.push("/home/front");
+async function handleLogin() {
+  try {
+    const valid = await loginFormRef.value.validate();
+    if (valid) {
+      console.log(loginForm.value);
+      // TODO: 向后端发送登录请求
+
+      ElMessage.success("登录成功")
+      router.push("/home/front");
+    }
+  } catch (error) {
+    ElMessage.error("登录失败，请检查输入");
+  }
 }
 </script>
 
@@ -46,7 +57,7 @@ function handleLogin() {
 
       <el-divider direction="vertical" class="divider" />
 
-      <el-form :model="loginForm" :rules="rules" status-icon>
+      <el-form :model="loginForm" :rules="rules" status-icon ref="loginFormRef">
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" placeholder="用户名" />
         </el-form-item>
