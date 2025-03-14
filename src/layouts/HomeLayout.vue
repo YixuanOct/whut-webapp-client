@@ -45,9 +45,6 @@ function leave(el, done) {
     complete: done,
   });
 }
-function handleResize() {
-  isMobile.value = window.innerWidth < 800;
-}
 function handleIconToggle(visible) {
   if (visible) {
     anime({
@@ -68,6 +65,13 @@ function handleIconToggle(visible) {
 function handleLogout() {
   ElMessage.success("退出登录成功");
   router.push("/auth/login");
+}
+function closeDrawer(path) {
+  isOpen.value = false;
+  router.push(path);
+}
+function handleResize() {
+  isMobile.value = window.innerWidth < 800;
 }
 onMounted(() => {
   handleResize();
@@ -90,14 +94,14 @@ onMounted(() => {
           :class="theme"
           @toggle-blue-theme="toggleBlueTheme"
           @toggle-yellow-theme="toggleYellowTheme"
-          @close-drawer="isOpen = false"
+          @close-drawer="closeDrawer"
         />
       </el-drawer>
       <SidebarNav
         :class="theme"
         @toggle-blue-theme="toggleBlueTheme"
         @toggle-yellow-theme="toggleYellowTheme"
-        @close-drawer="isOpen = false"
+        @close-drawer="closeDrawer"
         v-else
       />
     </el-aside>
@@ -164,13 +168,16 @@ onMounted(() => {
 .icon {
   font-size: 20px;
 }
+
 .el-button {
   outline: none;
 }
+
 .dropdown {
   margin-left: auto;
   color: white;
 }
+
 :deep(.el-tooltip__trigger) {
   outline: none;
 }

@@ -8,21 +8,13 @@ import {
   ReadOutlined,
   HighlightTwoTone,
 } from "@ant-design/icons-vue";
-import { useRouter } from "vue-router";
 
 const emit = defineEmits(["closeDrawer"]);
-
-function goTo(path) {
-  emit("closeDrawer");
-  router.push(path);
-}
-
-const router = useRouter();
 </script>
 
 <template>
   <el-menu :default-openeds="['2', '3']" default-active="1">
-    <el-menu-item index="1" @click="goTo('/home/front')">
+    <el-menu-item index="1" @click="$emit('closeDrawer', '/home/front')">
       <template #title>
         <HomeOutlined class="icon" />
         <span>首页</span>
@@ -33,7 +25,7 @@ const router = useRouter();
         <CompassOutlined class="icon" />
         <span>功能菜单</span>
       </template>
-      <el-menu-item index="2-1" @click="goTo('/home/user')">
+      <el-menu-item index="2-1" @click="$emit('closeDrawer', '/home/user')">
         <template #title>
           <UserOutlined class="icon" />
           <span>用户管理</span>
