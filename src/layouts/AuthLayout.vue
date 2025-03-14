@@ -91,6 +91,6 @@ onMounted(() => {
   border-radius: 12px;
   padding: 12px 25px;
   overflow: hidden;
-  height: auto!important;
+  height: auto !important;
 }
 </style>

@@ -195,15 +195,19 @@ async function handleUpdatePwd() {
     flex-direction: column;
     align-items: center;
   }
+
   .divider {
     display: none;
   }
+
   .update-pwd-footer .button-group {
     flex-direction: column;
   }
+
   .update-pwd-footer .el-button {
     padding: 2px !important;
   }
+
   .update-pwd-footer {
     height: 70px;
   }

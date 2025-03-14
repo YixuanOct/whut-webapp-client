@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,19 +10,19 @@ const router = createRouter({
         {
           path: "login",
           component: () => import("@/views/auth/LoginView.vue"),
-          meta: { index: 2 }
+          meta: { index: 2 },
         },
         {
           path: "register",
           component: () => import("@/views/auth/RegisterView.vue"),
-          meta: { index: 1 }
+          meta: { index: 1 },
         },
         {
           path: "updatePwd",
           component: () => import("@/views/auth/UpdatePwdView.vue"),
-          meta: { index: 3 }
-        }
-      ]
+          meta: { index: 3 },
+        },
+      ],
     },
     {
       path: "/home",
@@ -35,10 +35,10 @@ const router = createRouter({
         {
           path: "user",
           component: () => import("@/views/home/UserView.vue"),
-        }
-      ]
-    }
+        },
+      ],
+    },
   ],
-})
+});
 
-export default router
+export default router;

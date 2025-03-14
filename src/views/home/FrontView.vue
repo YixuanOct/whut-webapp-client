@@ -29,9 +29,11 @@ const date = ref(new Date());
   align-items: center;
   padding: 48px 0;
 }
+
 .front-main {
   flex: 2;
 }
+
 .avatar {
   width: 100%;
   aspect-ratio: 3/2;
@@ -42,6 +44,7 @@ const date = ref(new Date());
   justify-content: center;
   align-items: center;
 }
+
 .el-avatar {
   width: 90%;
   height: 90%;

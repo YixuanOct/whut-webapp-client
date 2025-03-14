@@ -26,7 +26,7 @@ async function handleLogin() {
       console.log(loginForm.value);
       // TODO: 向后端发送登录请求
 
-      ElMessage.success("登录成功")
+      ElMessage.success("登录成功");
       router.push("/home/front");
     }
   } catch (error) {
@@ -189,20 +189,25 @@ async function handleLogin() {
 :deep(.el-form-item.is-error .el-input__validateIcon) {
   color: #f56c6c;
 }
+
 @media (max-width: 800px) {
   .login-main {
     flex-direction: column;
     align-items: center;
   }
+
   .divider {
     display: none;
   }
+
   .login-footer .button-group {
     flex-direction: column;
   }
+
   .login-footer .el-button {
     padding: 2px !important;
   }
+
   .login-footer {
     height: 70px;
   }
