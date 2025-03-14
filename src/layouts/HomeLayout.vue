@@ -1,12 +1,15 @@
 <script setup>
 import SidebarNav from "@/components/SidebarNav.vue";
 import { onMounted, ref } from "vue";
-import { MenuOutlined } from "@ant-design/icons-vue";
+import { MenuOutlined, DownOutlined } from "@ant-design/icons-vue";
 import anime from "animejs/lib/anime.es.js";
+import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
 
 const theme = ref("blue-theme");
 const isMobile = ref(false);
 const isOpen = ref(false);
+const router = useRouter();
 
 function toggleBlueTheme() {
   theme.value = "blue-theme";
@@ -16,7 +19,6 @@ function toggleYellowTheme() {
   theme.value = "yellow-theme";
   isOpen.value = false;
 }
-
 function beforeEnter(el) {
   anime.set(el, {
     opacity: 0,
@@ -45,6 +47,27 @@ function leave(el, done) {
 }
 function handleResize() {
   isMobile.value = window.innerWidth < 800;
+}
+function handleIconToggle(visible) {
+  if (visible) {
+    anime({
+      targets: ".down-icon",
+      rotate: 180,
+      duration: 400,
+      easing: "easeInOutQuad",
+    });
+  } else {
+    anime({
+      targets: ".down-icon",
+      rotate: 0,
+      duration: 400,
+      easing: "easeInOutQuad",
+    });
+  }
+}
+function handleLogout() {
+  ElMessage.success("退出登录成功");
+  router.push("/auth/login");
 }
 onMounted(() => {
   handleResize();
@@ -83,6 +106,19 @@ onMounted(() => {
         <el-button v-if="isMobile" link @click="isOpen = !isOpen" color="black">
           <MenuOutlined class="icon" />
         </el-button>
+        <el-dropdown class="dropdown" @visible-change="handleIconToggle">
+          <span>
+            张三
+            <DownOutlined class="down-icon" />
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="handleLogout">
+                退出登录
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </el-header>
       <el-main class="home-main">
         <router-view v-slot="{ Component }">
@@ -129,6 +165,13 @@ onMounted(() => {
   font-size: 20px;
 }
 .el-button {
+  outline: none;
+}
+.dropdown {
+  margin-left: auto;
+  color: white;
+}
+:deep(.el-tooltip__trigger) {
   outline: none;
 }
 

@@ -49,10 +49,10 @@ async function handleUpdatePwd() {
       console.log(updatePwdForm.value);
       // TODO: 向后端发送修改密码请求
 
-      ElMessage.success("注册成功");
+      ElMessage.success("修改密码成功");
     }
   } catch (error) {
-    ElMessage.error("注册失败，请检查输入");
+    ElMessage.error("修改密码失败，请检查输入");
   }
 }
 </script>
