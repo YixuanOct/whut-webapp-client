@@ -58,9 +58,18 @@ import { ref, computed, onMounted } from "vue";
 //     postcode: "200333",
 //   },
 // ];
-const tableData = [];
+const originData = [];
+const filteredData = ref(originData);
+originData.push({
+  id: 0,
+  date: "2016-05-03 08:00:00",
+  name: "李小虎",
+  province: "上海",
+  city: "普陀区",
+  address: "上海市普陀区金沙江路 1518 弄",
+});
 for (let i = 0; i < 100; i++) {
-  tableData.push({
+  originData.push({
     id: i + 1,
     date: "2016-05-03 08:00:00",
     name: "王小虎",
@@ -71,18 +80,25 @@ for (let i = 0; i < 100; i++) {
 }
 const currentPage = ref(1);
 const pageSize = ref(5);
-const total = computed(() => tableData.length);
-const tableDataView = computed(() => {
-  return tableData.slice(
+const total = computed(() => filteredData.value.length);
+const DisplayedData = computed(() => {
+  return filteredData.value.slice(
     (currentPage.value - 1) * pageSize.value,
     currentPage.value * pageSize.value
   );
 });
 const keyword = ref("");
 
-function handleSizeChange(val) {}
-
-function handleCurrentChange(val) {}
+function handleSearch() {
+  if (keyword.value.trim()) {
+    filteredData.value = originData.filter((item) =>
+      item.name.includes(keyword.value)
+    );
+  } else {
+    filteredData.value = originData;
+  }
+  currentPage.value = 1;
+}
 </script>
 
 <template>
@@ -98,8 +114,9 @@ function handleCurrentChange(val) {}
           v-model="keyword"
           placeholder="请输入昵称"
           :prefix-icon="SearchOutlined"
+          @keyup.enter="handleSearch"
         />
-        <el-button type="primary" style="height: 40px">
+        <el-button type="primary" style="height: 40px" @click="handleSearch">
           <PlusOutlined class="icon" />
           搜索
         </el-button>
@@ -107,7 +124,7 @@ function handleCurrentChange(val) {}
     </el-header>
     <el-main class="user-main">
       <el-table
-        :data="tableDataView"
+        :data="DisplayedData"
         style="width: 100%"
         :show-overflow-tooltip="true"
         :row-style="{ height: '48px' }"
@@ -137,8 +154,6 @@ function handleCurrentChange(val) {}
         :page-sizes="[5, 10, 15, 20]"
         layout="total, sizes, prev, pager, next"
         :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
       />
     </el-footer>
   </el-container>
