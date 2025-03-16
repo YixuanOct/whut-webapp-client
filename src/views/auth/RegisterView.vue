@@ -6,16 +6,16 @@ import { Plus } from "@element-plus/icons-vue";
 
 const router = useRouter();
 const registerForm = ref({
-  username: "",
+  name: "",
   password: "",
   email: "",
-  date: "",
-  avatarUrl: "",
+  birthday: "",
+  avatar: "",
 });
 const registerFormRef1 = ref(null);
 const registerFormRef2 = ref(null);
 const rules = {
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   password: [
     { required: true, message: "请输入密码", trigger: "blur" },
     { min: 8, message: "密码长度不能小于 8 位", trigger: "blur" },
@@ -29,13 +29,13 @@ const rules = {
     { required: true, message: "请输入邮箱", trigger: "blur" },
     { type: "email", message: "邮箱格式不正确", trigger: "blur" },
   ],
-  date: [{ required: true, message: "请选择日期", trigger: "blur" }],
-  avatarUrl: [{ required: true, message: "请上传头像", trigger: "blur" }],
+  birthday: [{ required: true, message: "请选择生日", trigger: "blur" }],
+  avatar: [{ required: true, message: "请上传头像", trigger: "blur" }],
 };
 
 function handleSuccess(uploadFile) {
   if (uploadFile.raw) {
-    registerForm.value.avatarUrl = URL.createObjectURL(uploadFile.raw);
+    registerForm.value.avatar = URL.createObjectURL(uploadFile.raw);
   } else {
     ElMessage.error("上传头像失败！");
   }
@@ -80,7 +80,7 @@ async function handleRegister() {
         ref="registerFormRef1"
       >
         <el-form-item prop="username">
-          <el-input v-model="registerForm.username" placeholder="用户名" />
+          <el-input v-model="registerForm.name" placeholder="用户名" />
         </el-form-item>
         <el-form-item prop="password">
           <el-input v-model="registerForm.password" placeholder="密码" />
@@ -90,7 +90,7 @@ async function handleRegister() {
         </el-form-item>
         <el-form-item prop="date">
           <el-date-picker
-            v-model="registerForm.date"
+            v-model="registerForm.birthday"
             placeholder="日期"
             :editable="false"
           />
@@ -106,7 +106,7 @@ async function handleRegister() {
         :hide-required-asterisk="true"
       >
         <el-form-item
-          prop="avatarUrl"
+          prop="avatar"
           label="请上传头像"
           label-position="top"
           label-width="auto"
@@ -120,10 +120,10 @@ async function handleRegister() {
             :auto-upload="false"
           >
             <el-avatar
-              v-if="registerForm.avatarUrl"
+              v-if="registerForm.avatar"
               shape="square"
               fit="contain"
-              :src="registerForm.avatarUrl"
+              :src="registerForm.avatar"
             />
             <el-icon v-else class="avatar-uploader-icon">
               <Plus />

@@ -10,12 +10,12 @@ import { ElMessage } from "element-plus";
 
 const router = useRouter();
 const loginForm = ref({
-  username: "",
+  name: "",
   password: "",
 });
 const loginFormRef = ref(null);
 const rules = {
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
 };
 
@@ -58,8 +58,8 @@ async function handleLogin() {
       <el-divider direction="vertical" class="divider" />
 
       <el-form :model="loginForm" :rules="rules" status-icon ref="loginFormRef">
-        <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="用户名" />
+        <el-form-item prop="name">
+          <el-input v-model="loginForm.name" placeholder="用户名" />
         </el-form-item>
         <el-form-item prop="password">
           <el-input

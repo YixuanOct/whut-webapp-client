@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const updatePwdForm = ref({
-  username: "",
+  name: "",
   oldPassword: "",
   newPassword: "",
   confirmNewPassword: "",
@@ -13,7 +13,7 @@ const updatePwdForm = ref({
 const updatePwdFormRef1 = ref(null);
 const updatePwdFormRef2 = ref(null);
 const rules = {
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   oldPassword: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
   newPassword: [
     { required: true, message: "请输入新密码", trigger: "blur" },
@@ -67,8 +67,8 @@ async function handleUpdatePwd() {
         status-icon
         ref="updatePwdFormRef1"
       >
-        <el-form-item prop="username">
-          <el-input v-model="updatePwdForm.username" placeholder="用户名" />
+        <el-form-item prop="name">
+          <el-input v-model="updatePwdForm.name" placeholder="用户名" />
         </el-form-item>
         <el-form-item prop="oldPassword">
           <el-input v-model="updatePwdForm.oldPassword" placeholder="旧密码" />

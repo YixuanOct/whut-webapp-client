@@ -16,7 +16,7 @@ const rules = {
   province: [{ required: true, message: "请选择省份", trigger: "blur" }],
   city: [{ required: true, message: "请选择市区", trigger: "blur" }],
   address: [{ required: true, message: "请输入地址", trigger: "blur" }],
-  postcode: [
+  zip: [
     { required: true, message: "请输入邮编", trigger: "blur" },
     {
       pattern: /^\d{6}$/,
@@ -36,13 +36,13 @@ function open(title, type, data) {
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const seconds = String(date.getSeconds()).padStart(2, "0");
     form.value = {
-      id: "000",
+      id: "",
       date: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
       name: "",
       province: "",
       city: "",
       address: "",
-      postcode: "",
+      zip: "",
     };
   } else {
     form.value = { ...data };
@@ -102,8 +102,8 @@ defineExpose({
       <el-form-item label="地址" prop="address">
         <el-input v-model="form.address" />
       </el-form-item>
-      <el-form-item label="邮编" prop="postcode">
-        <el-input v-model="form.postcode" />
+      <el-form-item label="邮编" prop="zip">
+        <el-input v-model="form.zip" />
       </el-form-item>
     </el-form>
     <template #footer>

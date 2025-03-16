@@ -12,7 +12,7 @@ const originData = ref([
     province: "上海",
     city: "普陀区",
     address: "上海市普陀区金沙江路 1518 弄",
-    postcode: "200333",
+    zip: "200333",
   },
   {
     id: "2",
@@ -21,7 +21,7 @@ const originData = ref([
     province: "上海",
     city: "普陀区",
     address: "上海市普陀区金沙江路 1518 弄",
-    postcode: "200333",
+    zip: "200333",
   },
   {
     id: "3",
@@ -30,7 +30,7 @@ const originData = ref([
     province: "上海",
     city: "普陀区",
     address: "上海市普陀区金沙江路 1518 弄",
-    postcode: "200333",
+    zip: "200333",
   },
   {
     id: "4",
@@ -39,7 +39,7 @@ const originData = ref([
     province: "上海",
     city: "普陀区",
     address: "上海市普陀区金沙江路 1518 弄",
-    postcode: "200333",
+    zip: "200333",
   },
   {
     id: "5",
@@ -48,7 +48,7 @@ const originData = ref([
     province: "上海",
     city: "普陀区",
     address: "上海市普陀区金沙江路 1518 弄",
-    postcode: "200333",
+    zip: "200333",
   },
   {
     id: "6",
@@ -57,7 +57,7 @@ const originData = ref([
     province: "上海",
     city: "普陀区",
     address: "上海市普陀区金沙江路 1518 弄",
-    postcode: "200333",
+    zip: "200333",
   },
 ]);
 const filteredData = ref(originData.value);
@@ -90,7 +90,7 @@ function handleOpen(title, type, data) {
   dialogRef.value.open(title, type, data);
 }
 function handleAdd(data) {
-  data.id = maxId.value + 1;
+  data.id = (maxId.value + 1).toString();
   //和后端交互
   originData.value.push(data);
   handleSearch();
@@ -162,7 +162,7 @@ function handleDelete(data) {
         <el-table-column prop="province" label="省份" width="150" />
         <el-table-column prop="city" label="市区" width="100" />
         <el-table-column prop="address" label="地址" min-width="250" />
-        <el-table-column prop="postcode" label="邮编" width="100" />
+        <el-table-column prop="zip" label="邮编" width="100" />
         <el-table-column fixed="right" label="操作" width="100">
           <template #default="scope">
             <el-button
