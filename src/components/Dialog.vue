@@ -37,7 +37,7 @@ function open(title, type, data) {
     const seconds = String(date.getSeconds()).padStart(2, "0");
     form.value = {
       id: "",
-      date: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
+      date: `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`,
       name: "",
       province: "",
       city: "",
@@ -88,7 +88,11 @@ defineExpose({
       :hide-required-asterisk="true"
     >
       <el-form-item label="日期" prop="date">
-        <el-date-picker v-model="form.date" type="datetime" />
+        <el-date-picker
+          v-model="form.date"
+          type="datetime"
+          value-format="YYYY-MM-DDTHH:mm:SS"
+        />
       </el-form-item>
       <el-form-item label="姓名" prop="name">
         <el-input v-model="form.name" />

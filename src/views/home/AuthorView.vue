@@ -42,7 +42,7 @@ function handleOpen(title, type, data) {
 async function handleAdd(data) {
   try {
     const response = await axios.post(
-      "https://127.0.0.1:8080/api/author/add",
+      "http://127.0.0.1:8080/api/author/add",
       data
     );
     if (response.data.code == 200) {
@@ -58,7 +58,7 @@ async function handleAdd(data) {
 async function handleEdit(data) {
   try {
     const response = await axios.post(
-      "https://127.0.0.1:8080/api/author/edit",
+      "http://127.0.0.1:8080/api/author/edit",
       data
     );
     if (response.data.code == 200) {
@@ -79,7 +79,7 @@ function handleDelete(data) {
   }).then(async () => {
     try {
       const response = await axios.post(
-        "https://127.0.0.1:8080/api/author/delete",
+        "http://127.0.0.1:8080/api/author/delete",
         data
       );
       if (response.data.code == 200) {
@@ -93,6 +93,10 @@ function handleDelete(data) {
     }
   });
 }
+const dateFormatter = (row, column, cellValue, index) => {
+  return cellValue ? cellValue.replace("T", " ") : cellValue;
+};
+
 watch([currentPage, pageSize], () => {
   fetchData();
 });
@@ -139,7 +143,12 @@ onMounted(() => {
         border
       >
         <el-table-column prop="id" label="序号" width="100" />
-        <el-table-column prop="date" label="日期" width="200" />
+        <el-table-column
+          prop="date"
+          label="日期"
+          width="200"
+          :formatter="dateFormatter"
+        />
         <el-table-column prop="name" label="姓名" width="100" />
         <el-table-column prop="province" label="省份" width="150" />
         <el-table-column prop="city" label="市区" width="100" />

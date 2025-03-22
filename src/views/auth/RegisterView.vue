@@ -64,8 +64,12 @@ async function handleRegister() {
         registerForm.value
       );
 
+      console.log(registerForm.value);
+      
+
       if (response.data.code == 200) {
         ElMessage.success("注册成功");
+        router.push("/auth/login");
       } else {
         ElMessage.error(response.data.message);
       }
@@ -98,8 +102,9 @@ async function handleRegister() {
         <el-form-item prop="date">
           <el-date-picker
             v-model="registerForm.birthday"
-            placeholder="日期"
+            placeholder="生日"
             :editable="false"
+            value-format="YYYY-MM-DD"
           />
         </el-form-item>
       </el-form>
@@ -123,7 +128,8 @@ async function handleRegister() {
             action="#"
             :show-file-list="false"
             :before-upload="beforeUpload"
-            :on-success="handleSuccess"
+            :on-change="handleSuccess"
+            :auto-upload="false"
           >
             <el-avatar
               v-if="registerForm.avatar"

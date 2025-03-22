@@ -54,6 +54,7 @@ async function handleUpdatePwd() {
 
       if (response.data.code == 200) {
         ElMessage.success("修改密码成功");
+        router.push("/auth/login");
       } else {
         ElMessage.error(response.data.message);
       }
