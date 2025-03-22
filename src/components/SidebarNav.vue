@@ -25,7 +25,7 @@ const emit = defineEmits(["closeDrawer"]);
         <CompassOutlined class="icon" />
         <span>功能菜单</span>
       </template>
-      <el-menu-item index="2-1" @click="$emit('closeDrawer', '/home/user')">
+      <el-menu-item index="2-1" @click="$emit('closeDrawer', '/home/author')">
         <template #title>
           <UserOutlined class="icon" />
           <span>用户管理</span>

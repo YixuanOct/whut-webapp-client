@@ -7,8 +7,6 @@ const user = ref({});
 
 onMounted(() => {
   user.value = JSON.parse(sessionStorage.getItem("user"));
-  console.log(user.value);
-  
 });
 </script>
 

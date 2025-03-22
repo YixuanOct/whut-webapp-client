@@ -1,109 +1,75 @@
 <script setup>
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons-vue";
-import { ref, computed, onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import Dialog from "@/components/Dialog.vue";
 import { ElMessageBox, ElMessage } from "element-plus";
+import axios from "axios";
 
-const originData = ref([
-  {
-    id: "1",
-    date: "2016-05-03 08:00:00",
-    name: "王小虎",
-    province: "上海",
-    city: "普陀区",
-    address: "上海市普陀区金沙江路 1518 弄",
-    zip: "200333",
-  },
-  {
-    id: "2",
-    date: "2016-05-03 08:00:00",
-    name: "张小虎",
-    province: "上海",
-    city: "普陀区",
-    address: "上海市普陀区金沙江路 1518 弄",
-    zip: "200333",
-  },
-  {
-    id: "3",
-    date: "2016-05-03 08:00:00",
-    name: "刘小虎",
-    province: "上海",
-    city: "普陀区",
-    address: "上海市普陀区金沙江路 1518 弄",
-    zip: "200333",
-  },
-  {
-    id: "4",
-    date: "2016-05-03 08:00:00",
-    name: "李小虎",
-    province: "上海",
-    city: "普陀区",
-    address: "上海市普陀区金沙江路 1518 弄",
-    zip: "200333",
-  },
-  {
-    id: "5",
-    date: "2016-05-03 08:00:00",
-    name: "赵小虎",
-    province: "上海",
-    city: "普陀区",
-    address: "上海市普陀区金沙江路 1518 弄",
-    zip: "200333",
-  },
-  {
-    id: "6",
-    date: "2016-05-03 08:00:00",
-    name: "吴小虎",
-    province: "上海",
-    city: "普陀区",
-    address: "上海市普陀区金沙江路 1518 弄",
-    zip: "200333",
-  },
-]);
-const filteredData = ref(originData.value);
+const authors = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
-const total = computed(() => filteredData.value.length);
-const maxId = computed(() => {
-  return Math.max(...originData.value.map((item) => item.id));
-});
-const DisplayedData = computed(() => {
-  return filteredData.value.slice(
-    (currentPage.value - 1) * pageSize.value,
-    currentPage.value * pageSize.value
-  );
-});
+const total = ref(0);
 const keyword = ref("");
 const dialogRef = ref(null);
 
-function handleSearch() {
-  if (keyword.value.trim() === "") {
-    filteredData.value = originData.value;
-  } else {
-    filteredData.value = originData.value.filter((item) =>
-      item.name.includes(keyword.value)
-    );
+async function fetchData() {
+  try {
+    const response = await axios.get("http://127.0.0.1:8080/api/author/list", {
+      params: {
+        page: currentPage.value,
+        pageSize: pageSize.value,
+        keyword: keyword.value,
+      },
+    });
+    if (response.data.code == 200) {
+      authors.value = response.data.data.authors;
+      total.value = response.data.data.total;
+    } else {
+      ElMessage.error(response.data.message);
+    }
+  } catch (error) {
+    ElMessage.error("获取数据失败");
   }
+}
+
+function handleSearch() {
   currentPage.value = 1;
+  fetchData();
 }
 function handleOpen(title, type, data) {
   dialogRef.value.open(title, type, data);
 }
-function handleAdd(data) {
-  data.id = (maxId.value + 1).toString();
-  //和后端交互
-  originData.value.push(data);
-  handleSearch();
-  ElMessage.success("添加成功");
-}
-function handleEdit(data) {
-  const item = originData.value.find((item) => item.id === data.id);
-  //和后端交互
-  if (item) {
-    Object.assign(item, data);
+async function handleAdd(data) {
+  try {
+    const response = await axios.post(
+      "https://127.0.0.1:8080/api/author/add",
+      data
+    );
+    if (response.data.code == 200) {
+      ElMessage.success("添加成功");
+      fetchData();
+    } else {
+      ElMessage.error(response.data.message);
+    }
+  } catch (error) {
+    ElMessage.error("添加失败");
   }
-  handleSearch();
-  ElMessage.success("修改成功");
+}
+async function handleEdit(data) {
+  try {
+    const response = await axios.post(
+      "https://127.0.0.1:8080/api/author/edit",
+      data
+    );
+    if (response.data.code == 200) {
+      ElMessage.success("修改成功");
+      fetchData();
+    } else {
+      ElMessage.error(response.data.message);
+    }
+  } catch (error) {
+    ElMessage.error("修改失败");
+  }
 }
 function handleDelete(data) {
   ElMessageBox.confirm("确定删除吗？", "提示", {
@@ -111,18 +77,34 @@ function handleDelete(data) {
     cancelButtonText: "取消",
     type: "warning",
   }).then(async () => {
-    originData.value = originData.value.filter((item) => item.id !== data.id);
-    //和后端交互
-    handleSearch();
-    ElMessage.success("删除成功");
+    try {
+      const response = await axios.post(
+        "https://127.0.0.1:8080/api/author/delete",
+        data
+      );
+      if (response.data.code == 200) {
+        ElMessage.success("删除成功");
+        fetchData();
+      } else {
+        ElMessage.error(response.data.message);
+      }
+    } catch (error) {
+      ElMessage.error("删除失败");
+    }
   });
 }
+watch([currentPage, pageSize], () => {
+  fetchData();
+});
+onMounted(() => {
+  fetchData();
+});
 </script>
 
 <template>
-  <el-container class="user-container">
+  <el-container class="author-container">
     <Dialog ref="dialogRef" @add="handleAdd" @edit="handleEdit" />
-    <el-header class="user-header">
+    <el-header class="author-header">
       <h1 style="margin-bottom: 3rem">用户管理</h1>
       <div class="table-header">
         <el-button
@@ -146,9 +128,9 @@ function handleDelete(data) {
         </el-button>
       </div>
     </el-header>
-    <el-main class="user-main">
+    <el-main class="author-main">
       <el-table
-        :data="DisplayedData"
+        :data="authors"
         style="width: 100%"
         :show-overflow-tooltip="true"
         :row-style="{ height: '48px' }"
@@ -184,7 +166,7 @@ function handleDelete(data) {
         </el-table-column>
       </el-table>
     </el-main>
-    <el-footer class="user-footer">
+    <el-footer class="author-footer">
       <el-pagination
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
@@ -197,12 +179,12 @@ function handleDelete(data) {
 </template>
 
 <style scoped>
-.user-container {
+.author-container {
   background-color: white;
   height: 100%;
 }
 
-.user-header {
+.author-header {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -210,7 +192,7 @@ function handleDelete(data) {
   height: auto;
 }
 
-.user-main {
+.author-main {
   padding-top: 2px;
 }
 
@@ -229,7 +211,7 @@ function handleDelete(data) {
   margin-right: 4px;
 }
 
-.user-footer {
+.author-footer {
   display: flex;
   justify-content: center;
   align-items: center;

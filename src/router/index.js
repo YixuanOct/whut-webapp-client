@@ -38,8 +38,8 @@ const router = createRouter({
           component: () => import("@/views/home/FrontView.vue"),
         },
         {
-          path: "user",
-          component: () => import("@/views/home/UserView.vue"),
+          path: "author",
+          component: () => import("@/views/home/AuthorView.vue"),
         },
       ],
     },
