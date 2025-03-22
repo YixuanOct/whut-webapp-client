@@ -1,12 +1,21 @@
 <script setup>
 import { ref } from "vue";
+import { onMounted } from "vue";
+
 const date = ref(new Date());
+const user = ref({});
+
+onMounted(() => {
+  user.value = JSON.parse(sessionStorage.getItem("user"));
+  console.log(user.value);
+  
+});
 </script>
 
 <template>
   <el-container>
     <el-aside class="front-aside">
-      <h2>欢迎 张三</h2>
+      <h2>欢迎 {{ user.name }}</h2>
       <div class="avatar">
         <el-avatar
           shape="square"

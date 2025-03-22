@@ -1,3 +1,4 @@
+import { ElMessage } from "element-plus";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -43,6 +44,24 @@ const router = createRouter({
       ],
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  if (from.path.startsWith("/home") && !to.path.startsWith("/home")) {
+    sessionStorage.removeItem("user");
+  }
+
+  if (to.path.startsWith("/home")) {
+    const user = sessionStorage.getItem("user");
+    if (!user) {
+      ElMessage.error("请先登录");
+      next("/auth/login");
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

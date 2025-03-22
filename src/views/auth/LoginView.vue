@@ -31,6 +31,7 @@ async function handleLogin() {
 
       if (response.data.code == 200) {
         ElMessage.success("登录成功");
+        sessionStorage.setItem("user", JSON.stringify(response.data.data));
         router.push("/home/front");
       } else {
         ElMessage.error(response.data.message);

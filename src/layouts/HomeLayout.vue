@@ -10,6 +10,7 @@ const theme = ref("blue-theme");
 const isMobile = ref(false);
 const isOpen = ref(false);
 const router = useRouter();
+const user = ref({});
 
 function toggleBlueTheme() {
   theme.value = "blue-theme";
@@ -63,6 +64,7 @@ function handleIconToggle(visible) {
   }
 }
 function handleLogout() {
+  sessionStorage.removeItem("user");
   ElMessage.success("退出登录成功");
   router.push("/auth/login");
 }
@@ -76,6 +78,9 @@ function handleResize() {
 onMounted(() => {
   handleResize();
   window.addEventListener("resize", handleResize);
+});
+onMounted(() => {
+  user.value = JSON.parse(sessionStorage.getItem("user"));
 });
 </script>
 
@@ -112,7 +117,7 @@ onMounted(() => {
         </el-button>
         <el-dropdown class="dropdown" @visible-change="handleIconToggle">
           <span>
-            张三
+            {{ user.name }}
             <DownOutlined class="down-icon" />
           </span>
           <template #dropdown>
