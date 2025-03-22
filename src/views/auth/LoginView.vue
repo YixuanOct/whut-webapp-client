@@ -7,6 +7,7 @@ import {
   AlipayOutlined,
 } from "@ant-design/icons-vue";
 import { ElMessage } from "element-plus";
+import axios from "axios";
 
 const router = useRouter();
 const loginForm = ref({
@@ -23,11 +24,17 @@ async function handleLogin() {
   try {
     const valid = await loginFormRef.value.validate();
     if (valid) {
-      console.log(loginForm.value);
-      // TODO: 向后端发送登录请求
+      const response = await axios.post(
+        "http://127.0.0.1:8080/api/user/login",
+        loginForm.value
+      );
 
-      ElMessage.success("登录成功");
-      router.push("/home/front");
+      if (response.data.code == 200) {
+        ElMessage.success("登录成功");
+        router.push("/home/front");
+      } else {
+        ElMessage.error(response.data.message);
+      }
     }
   } catch (error) {
     ElMessage.error("登录失败，请检查输入");

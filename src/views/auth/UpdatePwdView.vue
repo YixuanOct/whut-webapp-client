@@ -2,6 +2,7 @@
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
 const updatePwdForm = ref({
@@ -46,10 +47,16 @@ async function handleUpdatePwd() {
       updatePwdFormRef2.value.validate(),
     ]);
     if (valid1 && valid2) {
-      console.log(updatePwdForm.value);
-      // TODO: 向后端发送修改密码请求
+      const response = await axios.post(
+        "http://127.0.0.1:8080/api/user/updatePwd",
+        updatePwdForm.value
+      );
 
-      ElMessage.success("修改密码成功");
+      if (response.data.code == 200) {
+        ElMessage.success("修改密码成功");
+      } else {
+        ElMessage.error(response.data.message);
+      }
     }
   } catch (error) {
     ElMessage.error("修改密码失败，请检查输入");

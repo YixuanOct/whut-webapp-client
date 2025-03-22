@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
+import axios from "axios";
 
 const router = useRouter();
 const registerForm = ref({
@@ -58,10 +59,16 @@ async function handleRegister() {
       registerFormRef2.value.validate(),
     ]);
     if (valid1 && valid2) {
-      console.log(registerForm.value);
-      // TODO: 向后端发送注册请求
+      const response = await axios.post(
+        "http://127.0.0.1:8080/api/user/register",
+        registerForm.value
+      );
 
-      ElMessage.success("注册成功");
+      if (response.data.code == 200) {
+        ElMessage.success("注册成功");
+      } else {
+        ElMessage.error(response.data.message);
+      }
     }
   } catch (error) {
     ElMessage.error("注册失败，请检查输入");
@@ -116,8 +123,7 @@ async function handleRegister() {
             action="#"
             :show-file-list="false"
             :before-upload="beforeUpload"
-            :on-change="handleSuccess"
-            :auto-upload="false"
+            :on-success="handleSuccess"
           >
             <el-avatar
               v-if="registerForm.avatar"
