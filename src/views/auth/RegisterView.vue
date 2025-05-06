@@ -13,6 +13,7 @@ const registerForm = ref({
   birthday: "",
   avatar: "",
 });
+const avatarFile = ref(null);
 const registerFormRef1 = ref(null);
 const registerFormRef2 = ref(null);
 const rules = {
@@ -36,6 +37,7 @@ const rules = {
 
 function handleSuccess(uploadFile) {
   if (uploadFile.raw) {
+    avatarFile.value = uploadFile.raw;
     registerForm.value.avatar = URL.createObjectURL(uploadFile.raw);
   } else {
     ElMessage.error("上传头像失败！");
@@ -59,15 +61,22 @@ async function handleRegister() {
       registerFormRef2.value.validate(),
     ]);
     if (valid1 && valid2) {
+      registerForm.value.avatar = avatarFile.value;
       const response = await axios.post(
         "http://127.0.0.1:8080/api/user/register",
-        registerForm.value
+        registerForm.value,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
       if (response.data.code == 200) {
         ElMessage.success("注册成功");
         router.push("/auth/login");
       } else {
+        registerForm.value.avatar = "";
         ElMessage.error(response.data.message);
       }
     }

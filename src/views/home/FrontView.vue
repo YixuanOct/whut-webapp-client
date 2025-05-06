@@ -7,6 +7,8 @@ const user = ref({});
 
 onMounted(() => {
   user.value = JSON.parse(sessionStorage.getItem("user"));
+  console.log(user.value);
+  
 });
 </script>
 
@@ -17,7 +19,7 @@ onMounted(() => {
         <el-avatar
           shape="square"
           fit="contain"
-          src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+          :src="user.avatar"
         />
       </div>
     </el-aside>
@@ -50,6 +52,7 @@ onMounted(() => {
 
 .front-main {
   flex: 2;
+  padding:48px 20px;
 }
 
 .avatar {
