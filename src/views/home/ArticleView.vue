@@ -64,7 +64,7 @@ function handleArticleInfo() {
         >
           <el-table-column prop="id" label="序号" width="60" />
           <el-table-column prop="name" label="作者姓名" min-width="100"/>
-          <el-table-column prop="province" label="文章数量" width="100" />
+          <el-table-column prop="title_count" label="文章数量" width="100" />
           <el-table-column label="操作" width="145">
             <template #default="scope">
               <el-button type="primary" @click="handleArticleInfo()">进入文章管理</el-button>

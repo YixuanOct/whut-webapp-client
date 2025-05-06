@@ -4,13 +4,18 @@ import { ref } from "vue";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
+import DialogArticle from "@/components/DialogArticle.vue";
 
 const router = useRouter();
 const user = ref({});
 const keyword = ref("");
 const articles = ref([]);
+const dialogRef = ref(null);
 
+function handleOpen(title, type, data) {
+  dialogRef.value.open(title, type, data);
+}
 async function fetchData() {
   try {
     const response = await axios.get("http://127.0.0.1:8080/api/article/list", {
@@ -19,8 +24,6 @@ async function fetchData() {
         keyword: keyword.value,
       },
     });
-    console.log(response.data);
-
     if (response.data.code == 200) {
       articles.value = response.data.data.articles;
     } else {
@@ -29,6 +32,63 @@ async function fetchData() {
   } catch (error) {
     ElMessage.error("获取数据失败" + error);
   }
+}
+function handleSearch() {
+  fetchData();
+}
+async function handleAdd(data) {
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8080/api/article/add",
+      data
+    );
+    if (response.data.code == 200) {
+      ElMessage.success("添加成功");
+      fetchData();
+    } else {
+      ElMessage.error(response.data.message);
+    }
+  } catch (error) {
+    ElMessage.error("添加失败");
+  }
+}
+async function handleEdit(data) {
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8080/api/article/edit",
+      data
+    );
+    if (response.data.code == 200) {
+      ElMessage.success("修改成功");
+      fetchData();
+    } else {
+      ElMessage.error(response.data.message);
+    }
+  } catch (error) {
+    ElMessage.error("修改失败");
+  }
+}
+function handleDelete(data) {
+  ElMessageBox.confirm("此操作将永久删除该文章，是否继续？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(async () => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8080/api/article/delete",
+        data
+      );
+      if (response.data.code == 200) {
+        ElMessage.success("删除成功");
+        fetchData();
+      } else {
+        ElMessage.error(response.data.message);
+      }
+    } catch (error) {
+      ElMessage.error("删除失败");
+    }
+  });
 }
 onMounted(() => {
   user.value = JSON.parse(sessionStorage.getItem("user"));
@@ -43,6 +103,7 @@ function handleArticle() {
 
 <template>
   <el-container>
+    <DialogArticle ref="dialogRef" @add="handleAdd" @edit="handleEdit" />
     <el-header class="articleinfo-header">
       <el-aside class="articleinfo-header-aside">
         <div class="avatar">
@@ -78,17 +139,22 @@ function handleArticle() {
     </el-header>
     <el-main class="articleinfo-main">
       <div class="table-header">
-        <el-button plain type="primary" style="height: 40px" @click="">
+        <el-button
+          plain
+          type="primary"
+          style="height: 40px"
+          @click="handleOpen('新增文章', 'add', user.name)"
+        >
           <PlusOutlined class="icon" />
           新增
         </el-button>
         <el-input
           v-model="keyword"
-          placeholder="请输入昵称"
+          placeholder="请输入标题"
           :prefix-icon="SearchOutlined"
-          @keyup.enter=""
+          @keyup.enter="handleSearch()"
         />
-        <el-button type="primary" style="height: 40px" @click="">
+        <el-button type="primary" style="height: 40px" @click="handleSearch()">
           <PlusOutlined class="icon" />
           搜索
         </el-button>
@@ -96,7 +162,6 @@ function handleArticle() {
       <el-table
         :data="articles"
         style="width: 100%"
-        :show-overflow-tooltip="true"
         :row-style="{ height: '48px' }"
         :header-row-style="{ height: '48px' }"
         height="350px"
@@ -111,7 +176,7 @@ function handleArticle() {
               link
               type="primary"
               size="small"
-              @click="handleOpen('修改联系人', 'edit', scope.row)"
+              @click="handleOpen('修改文章', 'edit', scope.row)"
             >
               编辑
             </el-button>
