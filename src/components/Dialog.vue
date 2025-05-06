@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch, computed, nextTick } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { pcTextArr } from "element-china-area-data";
 
 const emit = defineEmits(["add", "edit"]);
 
@@ -9,6 +10,22 @@ const form = ref({});
 const dialogTitle = ref("");
 const dialogType = ref("");
 const formRef = ref(null);
+const provinces = computed(() => pcTextArr);
+const cities = ref([]);
+
+const skipReset = ref(false);
+
+watch(
+  () => form.value.province,
+  (newVal, oldVal) => {
+    const provinceObj = pcTextArr.find((item) => item.value === newVal);
+    cities.value = provinceObj ? provinceObj.children : [];
+    if (!skipReset.value && newVal !== oldVal) {
+      form.value.city = "";
+    }
+  },
+  { immediate: true }
+);
 
 const rules = {
   date: [{ required: true, message: "请选择日期", trigger: "blur" }],
@@ -49,6 +66,10 @@ function open(title, type, data) {
   }
   dialogTitle.value = title;
   dialogType.value = type;
+  skipReset.value = true;
+  nextTick(() => {
+    skipReset.value = false;
+  });
   visible.value = true;
 }
 async function handleConfirm() {
@@ -98,10 +119,24 @@ defineExpose({
         <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item label="省份" prop="province">
-        <el-input v-model="form.province" />
+        <el-select v-model="form.province" placeholder="请选择省份">
+          <el-option
+            v-for="item in provinces"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="市区" prop="city">
-        <el-input v-model="form.city" />
+        <el-select v-model="form.city" placeholder="请选择市区">
+          <el-option
+            v-for="item in cities"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="地址" prop="address">
         <el-input v-model="form.address" />
