@@ -31,7 +31,7 @@ const emit = defineEmits(["closeDrawer"]);
           <span>联系人管理</span>
         </template>
       </el-menu-item>
-      <el-menu-item>
+      <el-menu-item index="2-2" @click="$emit('closeDrawer', '/home/article')">
         <template #title>
           <ReadOutlined class="icon" />
           <span>文章管理</span>

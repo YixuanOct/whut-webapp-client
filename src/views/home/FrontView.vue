@@ -2,13 +2,10 @@
 import { ref } from "vue";
 import { onMounted } from "vue";
 
-const date = ref(new Date());
 const user = ref({});
 
 onMounted(() => {
   user.value = JSON.parse(sessionStorage.getItem("user"));
-  console.log(user.value);
-  
 });
 </script>
 
@@ -16,11 +13,7 @@ onMounted(() => {
   <el-container>
     <el-aside class="front-aside">
       <div class="avatar">
-        <el-avatar
-          shape="square"
-          fit="contain"
-          :src="user.avatar"
-        />
+        <el-avatar shape="square" fit="contain" :src="user.avatar" />
       </div>
     </el-aside>
     <el-main class="front-main">
@@ -52,7 +45,7 @@ onMounted(() => {
 
 .front-main {
   flex: 2;
-  padding:48px 20px;
+  padding: 48px 20px;
 }
 
 .avatar {
