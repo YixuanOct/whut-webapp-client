@@ -4,6 +4,7 @@ import { onMounted, watch } from "vue";
 import { ElMessage } from "element-plus";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import * as echarts from "echarts";
 
 const router = useRouter();
 const user = ref({});
@@ -11,6 +12,7 @@ const users = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
 const total = ref(0);
+const myChart = ref(null);
 
 onMounted(() => {
   user.value = JSON.parse(sessionStorage.getItem("user"));
@@ -18,8 +20,38 @@ onMounted(() => {
 watch([currentPage, pageSize], () => {
   fetchData();
 });
+watch(users, () => {
+  myChart.value.setOption({
+    xAxis: {
+      data: users.value.map((user) => user.name),
+    },
+    series: [
+      {
+        type: "bar",
+        data: users.value.map((user) => user.title_count),
+      },
+    ],
+  });
+});
 onMounted(() => {
   fetchData();
+
+  myChart.value = echarts.init(document.querySelector(".chart"));
+  myChart.value.setOption({
+    title: {
+      text: "用户发表文章统计",
+    },
+    xAxis: {
+      data: [],
+    },
+    yAxis: {},
+    series: [
+      {
+        type: "bar",
+        data: [],
+      },
+    ],
+  });
 });
 
 async function fetchData() {
@@ -43,7 +75,7 @@ async function fetchData() {
 }
 
 function handleArticleInfo() {
-    router.push("/home/articleinfo");
+  router.push("/home/articleinfo");
 }
 </script>
 
@@ -63,11 +95,13 @@ function handleArticleInfo() {
           border
         >
           <el-table-column prop="id" label="序号" width="60" />
-          <el-table-column prop="name" label="作者姓名" min-width="100"/>
+          <el-table-column prop="name" label="作者姓名" min-width="100" />
           <el-table-column prop="title_count" label="文章数量" width="100" />
           <el-table-column label="操作" width="145">
             <template #default="scope">
-              <el-button type="primary" @click="handleArticleInfo()">进入文章管理</el-button>
+              <el-button type="primary" @click="handleArticleInfo()"
+                >进入文章管理</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -83,6 +117,7 @@ function handleArticleInfo() {
         <template #header>
           <h2>作者发布文章统计图表</h2>
         </template>
+        <div class="chart"></div>
       </el-card>
     </el-main>
   </el-container>
@@ -104,5 +139,9 @@ function handleArticleInfo() {
 }
 .el-pagination {
   margin-top: 10px;
+}
+.chart {
+  width: 100%;
+  height: 340px;
 }
 </style>
