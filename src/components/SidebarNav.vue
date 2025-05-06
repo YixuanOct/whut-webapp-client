@@ -28,7 +28,7 @@ const emit = defineEmits(["closeDrawer"]);
       <el-menu-item index="2-1" @click="$emit('closeDrawer', '/home/author')">
         <template #title>
           <UserOutlined class="icon" />
-          <span>用户管理</span>
+          <span>联系人管理</span>
         </template>
       </el-menu-item>
       <el-menu-item>

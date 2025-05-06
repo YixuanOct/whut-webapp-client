@@ -64,9 +64,6 @@ async function handleRegister() {
         registerForm.value
       );
 
-      console.log(registerForm.value);
-      
-
       if (response.data.code == 200) {
         ElMessage.success("注册成功");
         router.push("/auth/login");

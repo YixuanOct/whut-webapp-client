@@ -72,7 +72,7 @@ async function handleEdit(data) {
   }
 }
 function handleDelete(data) {
-  ElMessageBox.confirm("确定删除吗？", "提示", {
+  ElMessageBox.confirm("此操作将永久删除该联系人，是否继续？", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
@@ -109,13 +109,13 @@ onMounted(() => {
   <el-container class="author-container">
     <Dialog ref="dialogRef" @add="handleAdd" @edit="handleEdit" />
     <el-header class="author-header">
-      <h1 style="margin-bottom: 3rem">用户管理</h1>
+      <h1 style="margin-bottom: 3rem">联系人管理</h1>
       <div class="table-header">
         <el-button
           plain
           type="primary"
           style="height: 40px"
-          @click="handleOpen('新增用户', 'add')"
+          @click="handleOpen('新增联系人', 'add')"
         >
           <PlusOutlined class="icon" />
           新增
@@ -160,7 +160,7 @@ onMounted(() => {
               link
               type="primary"
               size="small"
-              @click="handleOpen('编辑用户', 'edit', scope.row)"
+              @click="handleOpen('修改联系人', 'edit', scope.row)"
             >
               编辑
             </el-button>
