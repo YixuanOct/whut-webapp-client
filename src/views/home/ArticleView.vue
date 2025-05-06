@@ -74,8 +74,8 @@ async function fetchData() {
   }
 }
 
-function handleArticleInfo() {
-  router.push("/home/articleinfo");
+function handleArticleInfo(author) {
+  router.push(`/home/articleinfo/${author}`);
 }
 </script>
 
@@ -99,8 +99,11 @@ function handleArticleInfo() {
           <el-table-column prop="title_count" label="文章数量" width="100" />
           <el-table-column label="操作" width="145">
             <template #default="scope">
-              <el-button type="primary" @click="handleArticleInfo()"
-                >进入文章管理</el-button
+              <el-button
+                type="primary"
+                @click="handleArticleInfo(scope.row.name)"
+              >
+                进入文章管理</el-button
               >
             </template>
           </el-table-column>

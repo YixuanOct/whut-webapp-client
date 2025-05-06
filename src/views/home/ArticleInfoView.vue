@@ -2,11 +2,12 @@
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons-vue";
 import { ref } from "vue";
 import { onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ElMessage, ElMessageBox } from "element-plus";
 import DialogArticle from "@/components/DialogArticle.vue";
 
+const route = useRoute();
 const router = useRouter();
 const user = ref({});
 const keyword = ref("");
@@ -90,10 +91,24 @@ function handleDelete(data) {
     }
   });
 }
-onMounted(() => {
-  user.value = JSON.parse(sessionStorage.getItem("user"));
-});
-onMounted(() => {
+async function fetchUser() {
+  try {
+    const response = await axios.get("http://127.0.0.1:8080/api/user/find", {
+      params: {
+        name: route.params.author,
+      },
+    });
+    if (response.data.code === 200) {
+      user.value = response.data.data;
+    } else {
+      ElMessage.error(response.data.message);
+    }
+  } catch (error) {
+    ElMessage.error("获取用户信息失败");
+  }
+}
+onMounted(async () => {
+  await fetchUser();
   fetchData();
 });
 function handleArticle() {
